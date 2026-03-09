@@ -1,0 +1,200 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String
+
+  role Role @default(USER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+
+  products Product[]
+  auctions Auction[] @relation("SellerAuctions")
+
+  savedAuctions SavedAuction[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@index([expires])
+}
+
+// ---------- APP MODELS ----------
+
+model Category {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  nameAr    String
+  nameEn    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products  Product[]
+
+  @@index([slug])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String
+
+  // ✅ Category (REQUIRED)
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  auction Auction?
+
+  @@index([ownerId])
+  @@index([createdAt])
+  @@index([categoryId])
+}
+
+enum AuctionStatus {
+  DRAFT
+  LIVE
+  ENDED
+  CANCELLED
+}
+
+model Auction {
+  id           String        @id @default(cuid())
+  startPrice   Int
+  currentPrice Int
+  status       AuctionStatus @default(DRAFT)
+  startsAt     DateTime
+  endsAt       DateTime
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  // ✅ LOCATION (NEW)
+  countryCode  String @default("SA") // ISO-2 مثل SA / AE / EG ...
+  city         String @default("Riyadh")
+
+  durationDays Int    @default(3)
+  itemsCount   Int    @default(1)
+
+  hijriDateLabel     String?
+  gregorianDateLabel String?
+  startDayTimeLabel  String?
+
+  auctionTypeLabel String?
+  badgeLabel       String?
+
+  auctionTypeLabelAr String?
+  auctionTypeLabelEn String?
+  badgeLabelAr       String?
+  badgeLabelEn       String?
+
+  badgeCount Int?
+
+  companyName    String?
+  companyLogoUrl String?
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @unique
+
+  seller   User   @relation("SellerAuctions", fields: [sellerId], references: [id])
+  sellerId String
+
+  bids     Bid[]
+  savedBy  SavedAuction[]
+
+  @@index([status, endsAt])
+  @@index([sellerId, createdAt])
+  @@index([createdAt])
+  @@index([countryCode, city]) // ✅ useful for filtering later
+  @@index([badgeLabel])
+  @@index([badgeLabelAr])
+  @@index([badgeLabelEn])
+  @@index([auctionTypeLabel])
+  @@index([auctionTypeLabelAr])
+  @@index([auctionTypeLabelEn])
+}
+
+model Bid {
+  id        String   @id @default(cuid())
+  amount    Int
+  createdAt DateTime @default(now())
+
+  auction   Auction @relation(fields: [auctionId], references: [id])
+  auctionId String
+
+  @@index([auctionId, createdAt])
+  @@index([createdAt])
+}
+
+model SavedAuction {
+  id        String   @id @default(cuid())
+  userId    String
+  auctionId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  auction Auction @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, auctionId])
+  @@index([userId, createdAt])
+  @@index([auctionId])
+}

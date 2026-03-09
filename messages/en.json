@@ -1,0 +1,121 @@
+{
+  "layout": {
+    "brand": "Auction Market",
+    "tagline": "List your products, start the bidding, and close the deal.",
+    "nav": {
+      "home": "Home",
+      "sell": "Sell a product"
+    }
+  },
+
+"auth": {
+  "login": "Login",
+  "register": "Register",
+  "profile": "Profile",
+  "hi": "Hi,",
+  "logout": "Logout",
+  "loggingOut": "Logging out..."
+}
+
+,
+
+  "home": {
+    "hero": {
+      "titleStart": "Start",
+      "titleHighlight": "your own auction platform",
+      "subtitle": "Let users upload products, start auctions, and receive bids easily. This is the base you can later connect to real-time updates and payment systems.",
+      "cta": "+ List your first product",
+      "badge": "Live auctions • Stripe payments coming soon"
+    },
+
+    "card": {
+      "latestBid": "Latest bid",
+      "liveAuction": "Live auction",
+      "liveDemo": "Live demo",
+      "sampleTitle": "Sample product name",
+      "sampleDescription": "You’ll soon replace this with real products from your own database.",
+      "currentBid": "Current bid",
+      "viewAuction": "View auction",
+      "placeBid": "Place bid",
+      "currentPrice": "Current price",
+      "endsAt": "Ends at"
+    },
+
+    "section": {
+      "liveTitle": "Live auctions",
+      "liveSubtitle": "Browse items currently on auction. Place a bid and try to win."
+    },
+
+    "empty": {
+      "noAuctions": "No live auctions yet.",
+      "ctaPrefix": "Be the first to list a product.",
+      "ctaSuffix": "Once you add an item, it will appear here with its current price and time left.",
+      "ctaLink": "Be the first to list a product."
+    },
+
+    "countdown": {
+      "timed": "Timed",
+      "endsIn": "Ends in",
+      "finished": "Auction finished",
+      "auctionEndsAt": "Auction ends at",
+      "details": "Details",
+      "day": "day",
+      "days": "days",
+      "hour": "hour",
+      "hours": "hours",
+      "minute": "minute",
+      "minutes": "minutes",
+      "second": "second",
+      "seconds": "seconds"
+    }
+  },
+
+  "sell": {
+    "pageTitle": "Create a new auction",
+
+    "label": {
+      "auctionTitle": "Auction title",
+      "auctionDescription": "Auction description",
+      "upload": "Auction image",
+      "startPrice": "Starting price (SAR)",
+      "city": "City",
+      "durationDays": "Duration (days)",
+      "productCount": "Number of products",
+      "auctionType": "Auction type",
+      "badgeLabel": "Badge text",
+      "badgeCount": "Badge count",
+      "companyLogoUrl": "Company logo URL",
+      "startsAt": "Starts at (date & time)",
+      "endsAt": "Ends at (date & time)"
+    },
+
+    "placeholder": {
+      "title": "Example: Riyadh assets auction",
+      "description": "Short description of the auction...",
+      "companyLogoUrl": "/logos/company.png"
+    },
+
+    "button": {
+      "chooseFile": "Select image file",
+      "submit": "Create auction",
+      "saving": "Saving..."
+    },
+
+    "file": {
+      "noFile": "No image selected"
+    },
+
+    "helper": {
+      "imageStored": "For this demo, the image will be stored as a Data URL."
+    },
+
+    "error": {
+      "fillAll": "Please fill in all fields.",
+      "generic": "Something went wrong. Please try again."
+    },
+
+    "success": {
+      "created": "Auction created successfully!"
+    }
+  }
+}
